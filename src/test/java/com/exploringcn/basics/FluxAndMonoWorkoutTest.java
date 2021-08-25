@@ -115,4 +115,40 @@ public class FluxAndMonoWorkoutTest {
                 .verifyComplete();
     }
 
+    // 08 - Create a Flux of names and FILTER names that start with 'A'
+    @Test
+    public void testFilterNamesWithA(){
+        Flux<String> namesWithAFlux = Flux.just("Arman", "Ayden", "Tony", "Florence", "Gil", "Ash", "Ackermann")
+                                            .filter((item) -> item.startsWith("A"));    // filter names that start with A
+
+        StepVerifier.create(namesWithAFlux)
+                .expectNext("Arman", "Ayden", "Ash", "Ackermann")
+                .verifyComplete();
+
+    }
+
+    // 09 - Create a Flux of names and FILTER names that start with 'A'
+    @Test
+    public void testFilterNamesWithAThatAreFiveLettersLong(){
+        Flux<String> namesWithAFlux = Flux.just("Arman", "Ayden", "Tony", "Florence", "Gil", "Ash", "Ackermann")
+                                            .filter((item) -> item.startsWith("A"))    // filter names that start with A
+                                            .filter((item) -> item.length() == 5);  // filter names that are 5 letters long
+
+        StepVerifier.create(namesWithAFlux)
+                .expectNext("Arman", "Ayden")
+                .verifyComplete();
+
+    }
+
+    // 10 - Create a Flux of integers and filter the even ones
+    @Test
+    public void testFilterEvenIntegers(){
+        Flux<Integer> numbersFlux = Flux.range(-10, 21)
+                .filter((number) -> number % 2 == 0);
+
+        StepVerifier.create(numbersFlux)
+                .expectNext(-10, -8, -6, -4, -2, 0, 2, 4, 6, 8, 10)
+                .verifyComplete();
+    }
+
 }
