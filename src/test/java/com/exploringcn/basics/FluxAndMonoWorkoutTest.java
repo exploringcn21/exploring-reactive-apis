@@ -4,6 +4,9 @@ import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class FluxAndMonoWorkoutTest {
 
 
@@ -59,6 +62,19 @@ public class FluxAndMonoWorkoutTest {
                 .expectNextCount(4) // count of the number of elements in the flux
                 .verifyComplete();  // verify that all flux elements have been read without error. This will also trigger the flux to start emitting.
 
+    }
+
+    // 04 - Create a Flux from an ArrayList<String> i.e. an Iterable type
+    @Test
+    public void testFluxFromArrayList(){
+        List<String> listOfNames = Arrays.asList("Adam", "Ben", "Claire");
+
+        // create flux from above list
+        Flux<String> namesFlux = Flux.fromIterable(listOfNames);
+
+        StepVerifier.create(namesFlux)
+                .expectNext("Adam", "Ben", "Claire")    // Expect elements in order
+                .verifyComplete();
     }
 
 }
