@@ -25,4 +25,24 @@ public class FluxAndMonoWorkoutTest {
 
     }
 
+
+    // 02 - Subscribe to a Flux of elements, read each emitted element & verify that it exits with any error
+    @Test
+    public void testFluxEventsAreReadInOrderWithError(){
+        // create Flux of names and an exception
+        Flux<String> namesFlux = Flux.just("Adam", "Ben", "Claire", "Dorset", "Elan")
+                .concatWith(Flux.error(new RuntimeException("Exceptional Event")));
+
+
+        // verify that an exception event is emitted from the flux
+        StepVerifier.create(namesFlux)
+                .expectNext("Adam") //  Expect elements in order
+                .expectNext("Ben")
+                .expectNext("Claire")
+                .expectNext("Dorset")
+                .expectNext("Elan")
+                .expectError(RuntimeException.class)    // verify that RuntimeException is thrown by flux
+                .verify();  // This will actually trigger the flux to start emitting. Since we are expecting an error, there is no onComplete event.
+    }
+
 }
