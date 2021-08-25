@@ -45,4 +45,20 @@ public class FluxAndMonoWorkoutTest {
                 .verify();  // This will actually trigger the flux to start emitting. Since we are expecting an error, there is no onComplete event.
     }
 
+    // 03 - Subscribe to a Flux of elements, and verify its count
+    @Test
+    public void testFluxEventsCount(){
+
+        // Create Flux of elements
+        Flux<String> namesFlux = Flux.just("Adam", "Ben", "Claire", "Dorset", "Elan");
+
+        // Subscribe to the flux and test that elements are received in order
+        StepVerifier.create(namesFlux)  // Prepare the StepVerifier for testing. It will subscribe to the flux passed in.
+                //.expectNextCount(5) // this triggers the onComplete event. We cannot expect an onNext after this has run.
+                .expectNext("Adam")
+                .expectNextCount(4) // count of the number of elements in the flux
+                .verifyComplete();  // verify that all flux elements have been read without error. This will also trigger the flux to start emitting.
+
+    }
+
 }
