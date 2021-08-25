@@ -6,6 +6,7 @@ import reactor.test.StepVerifier;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Stream;
 
 public class FluxAndMonoWorkoutTest {
 
@@ -90,5 +91,18 @@ public class FluxAndMonoWorkoutTest {
                 .verifyComplete();
     }
 
+    // 06 - Create a Flux from a Stream
+    @Test
+    public void testFluxFromStream(){
+        Stream<String> streamOfNames = Stream.of("Adam", "Ben", "Claire")
+                                            .map(String::toUpperCase);  // transform to UPPERCASE
+
+        Flux<String> namesFlux = Flux.fromStream(streamOfNames);
+
+        StepVerifier.create(namesFlux)
+                .expectNext("ADAM", "BEN", "CLAIRE")    // verify that elements are in UPPERCASE
+                .verifyComplete();
+
+    }
 
 }
