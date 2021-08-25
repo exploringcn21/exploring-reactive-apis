@@ -77,4 +77,18 @@ public class FluxAndMonoWorkoutTest {
                 .verifyComplete();
     }
 
+    // 05 - Create a Flux from a String[] array
+    @Test
+    public void testFluxFromArray(){
+        String[] arrayOfNames = new String[]{"Adam", "Ben", "Claire"};
+
+        // create flux from above array
+        Flux<String> namesFlux = Flux.fromArray(arrayOfNames);
+
+        StepVerifier.create(namesFlux)
+                .expectNext("Adam", "Ben", "Claire")
+                .verifyComplete();
+    }
+
+
 }
