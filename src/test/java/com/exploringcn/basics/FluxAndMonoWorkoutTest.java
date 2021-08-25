@@ -105,4 +105,14 @@ public class FluxAndMonoWorkoutTest {
 
     }
 
+    // 07 - Create a Flux with a range of integers
+    @Test
+    public void testFluxIntegersRange(){
+        Flux<Integer> numbersFlux = Flux.range(1, 10);  // 10 consecutive numbers starting with 1
+
+        StepVerifier.create(numbersFlux)
+                .expectNext(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
+                .verifyComplete();
+    }
+
 }
