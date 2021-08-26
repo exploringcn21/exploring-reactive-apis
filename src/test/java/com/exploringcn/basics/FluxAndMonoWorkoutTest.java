@@ -191,4 +191,24 @@ public class FluxAndMonoWorkoutTest {
         return Flux.just(s+"1", s+"2", s+"3");
     }
 
+    // 13 - simulate an exception during processing of the flux but resume it by supplying a new flux
+    @Test
+    public void fluxExceptionHandlingWithOnErrorResume(){
+
+        int number = 100;
+        Flux<Integer> numbersFlux = Flux.just(66, 10 ,3, 2, 0, 20, 1, 1000)
+                .filter((n) -> {
+                    // should throw a "divide by zero exception"
+                    return number % n == 0;
+                }) // filter numbers from the flux that are not factors of 100
+                .onErrorResume((e) -> Flux.just(1, 100))
+                .log();
+
+        StepVerifier.create(numbersFlux)
+                .expectSubscription()
+                .expectNext(10, 2)  // these get filtered successfully before "divide by zero exception" is raised
+                .expectNext(1, 100)  // these get returned to pipeline due to error
+                .verifyComplete();
+    }
+
 }
