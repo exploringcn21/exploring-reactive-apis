@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
+import java.time.Duration;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Stream;
@@ -164,6 +165,30 @@ public class FluxAndMonoWorkoutTest {
                 .expectNext(1,4,9,16,25)    // repeat
                 .expectNext(1,4,9,16,25)    // repeat
                 .verifyComplete();
+    }
+
+    // 12 - Create a Flux of english alphabets, pass them to a mock DB method that returns an aggregate response as Flux, then flatten and transform each element
+    @Test
+    public void testFlatMap(){
+        Flux<String> lettersFlux = Flux.just("A","B","C")
+                .flatMap(this::simulateDatabaseCall)    // flatten ((A1, A2, A3), (B1, B2, B3), (C1, C2, C3)) to (A1, A2, A3, B1, B2, B3, C1, C2, C3)
+                .map(String::toLowerCase)   // transform to ("a1","a2","a3","b1","b2","b3","c1","c2","c3")
+                .log(); // visualize processing
+
+
+        StepVerifier.create(lettersFlux)
+                .expectNext("a1","a2","a3","b1","b2","b3","c1","c2","c3")
+                .verifyComplete();
+    }
+
+    // simulate a DB call that takes in an input and returns a Flux of elements
+    private Flux<String> simulateDatabaseCall(String s) {
+        try {
+            Thread.sleep(Duration.ofSeconds(1).toMillis());
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return Flux.just(s+"1", s+"2", s+"3");
     }
 
 }
