@@ -151,4 +151,19 @@ public class FluxAndMonoWorkoutTest {
                 .verifyComplete();
     }
 
+    // 11 - Create a Flux of integers, find their squares and emit the flux THRICE again
+    @Test
+    public void testMapAndRepeatFlux(){
+        Flux<Integer> numbersFlux = Flux.range(1,5)
+                .map(n -> n*n)  // transform each emitted element from flux
+                .repeat(3);  // repeat the above transformation 3 times more
+
+        StepVerifier.create(numbersFlux)
+                .expectNext(1,4,9,16,25)    // transform and produce flux
+                .expectNext(1,4,9,16,25)    // repeat
+                .expectNext(1,4,9,16,25)    // repeat
+                .expectNext(1,4,9,16,25)    // repeat
+                .verifyComplete();
+    }
+
 }
