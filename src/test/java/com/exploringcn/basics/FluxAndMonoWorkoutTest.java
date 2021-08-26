@@ -198,7 +198,7 @@ public class FluxAndMonoWorkoutTest {
         int number = 100;
         Flux<Integer> numbersFlux = Flux.just(66, 10 ,3, 2, 0, 20, 1, 1000)
                 .filter((n) -> number % n == 0) // filter numbers from the flux that are not factors of 100
-                .onErrorResume((e) -> Flux.just(1, 100))
+                .onErrorResume((e) -> Flux.just(1, number))
                 .log();
 
         StepVerifier.create(numbersFlux)
