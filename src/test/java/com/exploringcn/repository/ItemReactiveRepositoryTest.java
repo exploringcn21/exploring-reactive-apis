@@ -96,4 +96,21 @@ class ItemReactiveRepositoryTest {
                 .verifyComplete();
     }
 
+    @Test
+    public void updateItem(){
+        Double newPrice = 159.99;
+
+        Flux<Item> itemFlux = itemReactiveRepository.findByDescription("OnePlus")
+                .map(item -> {
+                    item.setPrice(newPrice);
+                    return item;
+                })  // Flux<Item>
+                .flatMap(itemReactiveRepository::save); // save returns Flux<Flux<Item>> therefore need to flatten
+
+        StepVerifier.create(itemFlux)
+                .expectSubscription()
+                .expectNextMatches(item -> item.getPrice() == 159.99)
+                .verifyComplete();
+    }
+
 }
