@@ -113,4 +113,19 @@ class ItemReactiveRepositoryTest {
                 .verifyComplete();
     }
 
+    @Test
+    public void deleteItem(){
+        Mono<Void> deletedItem = itemReactiveRepository.findById("abc123")
+                .map(Item::getId)
+                .flatMap(itemReactiveRepository::deleteById);   // flatten response from Mono<Mono<Item>> to Mono<Item>
+
+        StepVerifier.create(deletedItem.log("Item Mono delete: "))
+                .expectSubscription()
+                .verifyComplete();
+
+        StepVerifier.create(itemReactiveRepository.findAll().log("Item FindAll: "))
+                .expectNextCount(4)
+                .verifyComplete();
+    }
+
 }
