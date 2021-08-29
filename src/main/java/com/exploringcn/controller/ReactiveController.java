@@ -29,4 +29,11 @@ public class ReactiveController {
                 .log();
     }
 
+    // this returns a flux of long (as a stream) with a delay of 1 second in-between
+    @GetMapping(value = "flux-infinite-stream", produces = TEXT_EVENT_STREAM_VALUE)
+    public Flux<Long> returnNumbersFluxStream2(){
+        return Flux.interval(Duration.ofSeconds(1))
+                .log();
+    }
+
 }

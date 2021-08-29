@@ -41,5 +41,24 @@ class ReactiveControllerTest {
     }
 
 
+    // test the elements returned as a infinite flux
+    @Test
+    public void testFluxInfiniteStream(){
+        Flux<Long> fluxStream = client.get().uri("/reactive/flux-infinite-stream")
+                .accept(MediaType.TEXT_EVENT_STREAM)
+                .exchange()
+                .expectStatus().isOk()
+                .returnResult(Long.class)
+                .getResponseBody();
+
+        StepVerifier.create(fluxStream)
+                .expectSubscription()
+                .expectNext(0L)
+                .expectNext(1L)
+                .expectNext(2L)
+                .expectNext(3L)
+                .thenCancel()   // cancels subscription to stop flux from emitting further
+                .verify();
+    }
 
 }
