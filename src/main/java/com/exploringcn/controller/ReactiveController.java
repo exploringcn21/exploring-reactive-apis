@@ -4,6 +4,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 
@@ -34,6 +35,12 @@ public class ReactiveController {
     public Flux<Long> returnNumbersFluxStream2(){
         return Flux.interval(Duration.ofSeconds(1))
                 .log();
+    }
+
+    // this return a Mono i.e. 1 element in a non-blocking way
+    @GetMapping("/mono")
+    public Mono<Integer> returnMono(){
+        return Mono.just(1).log();
     }
 
 }

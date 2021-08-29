@@ -9,6 +9,8 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
+import javax.print.attribute.standard.Media;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 @WebFluxTest
@@ -59,6 +61,20 @@ class ReactiveControllerTest {
                 .expectNext(3L)
                 .thenCancel()   // cancels subscription to stop flux from emitting further
                 .verify();
+    }
+
+
+    // test a Mono
+    @Test
+    public void testMono(){
+        Integer expected = 1;
+
+        client.get().uri("/reactive/mono")
+                .accept(MediaType.APPLICATION_JSON)
+                .exchange()
+                .expectStatus().isOk()
+                .expectBody(Integer.class)
+                .consumeWith((element) -> assertEquals(expected, element.getResponseBody()));
     }
 
 }
