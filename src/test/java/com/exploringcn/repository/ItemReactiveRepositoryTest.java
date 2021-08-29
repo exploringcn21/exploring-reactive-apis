@@ -69,4 +69,14 @@ class ItemReactiveRepositoryTest {
                 .verifyComplete();
     }
 
+    @Test
+    public void getItemByDescription(){
+        Mono<Item> itemMono = itemReactiveRepository.findByDescription("OnePlus");
+
+        StepVerifier.create(itemMono)
+                .expectSubscription()
+                .expectNextCount(1)
+                .verifyComplete();
+    }
+
 }
