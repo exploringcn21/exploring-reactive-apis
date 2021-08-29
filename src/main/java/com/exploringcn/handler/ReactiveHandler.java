@@ -15,4 +15,10 @@ public class ReactiveHandler {
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(Flux.just(1,2,3,4), Integer.class);   // specify the Publisher to write to the response and the type of each element in the Publisher
     }
+
+    public Mono<ServerResponse> mono(ServerRequest request){
+        return ServerResponse.ok()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(Mono.just(1), Integer.class);
+    }
 }
