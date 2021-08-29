@@ -20,6 +20,7 @@ import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.io.IOException;
@@ -36,7 +37,8 @@ class ItemReactiveRepositoryTest {
     List<Item> listOfItems = List.of(new Item(null, "Samsung", 400.0),
             new Item(null, "LG", 420.0),
             new Item(null, "Apple", 299.0),
-            new Item(null, "OnePlus", 149.99));
+            new Item(null, "OnePlus", 149.99),
+            new Item("abc123", "Nokia", 149.99));
 
     @BeforeEach
     public void setUp(){
@@ -53,7 +55,17 @@ class ItemReactiveRepositoryTest {
 
         StepVerifier.create(fluxOfItems)
                 .expectSubscription()
-                .expectNextCount(4)
+                .expectNextCount(5)
+                .verifyComplete();
+    }
+
+    @Test
+    public void getItemByID(){
+        Mono<Item> itemMono = itemReactiveRepository.findById("abc123");
+
+        StepVerifier.create(itemMono)
+                .expectSubscription()
+                .expectNextMatches((item) -> "Nokia".equals(item.getDescription()))
                 .verifyComplete();
     }
 
