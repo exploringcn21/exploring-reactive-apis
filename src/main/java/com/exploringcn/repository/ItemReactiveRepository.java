@@ -2,10 +2,10 @@ package com.exploringcn.repository;
 
 import com.exploringcn.document.Item;
 import org.springframework.data.mongodb.repository.ReactiveMongoRepository;
-import reactor.core.publisher.Mono;
+import reactor.core.publisher.Flux;
 
 public interface ItemReactiveRepository extends ReactiveMongoRepository<Item, String> {
 
-    Mono<Item> findByDescription(String description);
+    Flux<Item> findByDescription(String description);
 
 }

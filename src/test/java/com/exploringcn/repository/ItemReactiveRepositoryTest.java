@@ -71,7 +71,7 @@ class ItemReactiveRepositoryTest {
 
     @Test
     public void getItemByDescription(){
-        Mono<Item> itemMono = itemReactiveRepository.findByDescription("OnePlus");
+        Flux<Item> itemMono = itemReactiveRepository.findByDescription("OnePlus");
 
         StepVerifier.create(itemMono)
                 .expectSubscription()
