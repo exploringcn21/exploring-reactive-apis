@@ -79,4 +79,21 @@ class ItemReactiveRepositoryTest {
                 .verifyComplete();
     }
 
+    @Test
+    public void saveItem(){
+        Item item = Item.builder()
+                .id(null)
+                .description("Google Mini Home")
+                .price(30.00)
+                .build();
+
+
+        Mono<Item> itemMono = itemReactiveRepository.save(item);
+
+        StepVerifier.create(itemMono)
+                .expectSubscription()
+                .expectNextMatches((i) -> i.getId() != null && "Google Mini Home".equals(i.getDescription()))
+                .verifyComplete();
+    }
+
 }
