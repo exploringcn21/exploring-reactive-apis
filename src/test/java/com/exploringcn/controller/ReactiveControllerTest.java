@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
 import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest;
 import org.springframework.http.MediaType;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
@@ -15,6 +16,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @WebFluxTest
 @AutoConfigureWebTestClient(timeout = "36000")
+@DirtiesContext
 class ReactiveControllerTest {
 
     @Autowired

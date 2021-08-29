@@ -19,6 +19,7 @@ import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.test.annotation.DirtiesContext;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
@@ -29,6 +30,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 @DataMongoTest
+@DirtiesContext
 class ItemReactiveRepositoryTest {
 
     @Autowired
